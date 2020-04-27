@@ -1,0 +1,10 @@
+
+.component-seat-grid{
+  .wrapper {
+    display: grid;
+    grid-template-columns: 1/12fr;
+    grid-gap: 10px;
+    grid-template-rows: 1/50;
+  }
+
+}
