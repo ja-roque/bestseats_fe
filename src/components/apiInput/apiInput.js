@@ -9,6 +9,7 @@ import SeatGrid from "../seatGrid";
 
 const ApiInput = (props) => {
 
+  let [venueData, setVenueData] = useState(false)
   let [seatData, setSeatData] = useState(false)
 
   const handleSubmit = (event) => {
@@ -17,7 +18,7 @@ const ApiInput = (props) => {
     const data = formDataToVenue(event.target.elements);
     console.log(data)
 
-    fetch('http://localhost:3000/bestseats/show', {
+    fetch('http://localhost:3000/bestseats/venue', {
       method: 'POST',
       body: JSON.stringify(data),
       headers: {
@@ -26,7 +27,22 @@ const ApiInput = (props) => {
       }
     }).then(response =>{
           response.json().then(json => {
-            setSeatData({ rows: data.venue_data.venue.layout.rows, columns: data.venue_data.venue.layout.columns , seat_data: json})
+            setVenueData({ rows: data.venue_data.venue.layout.rows, columns: data.venue_data.venue.layout.columns , seat_data: json})
+          });
+        }
+
+    );
+
+    fetch('http://localhost:3000/bestseats/seats', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    }).then(response =>{
+          response.json().then(json => {
+            setSeatData(json)
           });
         }
 
@@ -60,7 +76,7 @@ const ApiInput = (props) => {
         Submit
       </Button>
     </Form>
-    <SeatGrid key={`uniq`} seatData={seatData} className={'component-seat-grid'}/>
+    <SeatGrid key={`uniq`} venueData={venueData} seatData={seatData} className={'component-seat-grid'}/>
   </div>;
 }
 
